@@ -1,0 +1,29 @@
+# Sekrety i konfiguracja lokalna
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node
+node_modules/
+dist/
+build/
+npm-debug.log*
+
+# Edytory i system
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Dane lokalne
+*.sqlite3
+*.log
