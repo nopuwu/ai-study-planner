@@ -34,6 +34,9 @@ Poza pierwszą wersją zostają: synchronizacja z zewnętrznym kalendarzem, pane
 ├── backend/     # API w FastAPI, logika biznesowa, dostęp do bazy, serwis generowania AI
 ├── frontend/    # aplikacja React + Tailwind
 ├── docs/        # założenia, model danych, architektura, materiały do prezentacji
+├── docker/             # pliki Dockerfile backendu i frontendu
+├── docker-compose.yml  # środowisko lokalne: baza, backend, frontend
+├── .env.example        # wzór pliku konfiguracji .env
 ├── .gitignore
 └── README.md
 ```
@@ -42,13 +45,45 @@ Każdy katalog ma własny `README.md` z opisem zawartości i planowanego podzia�
 
 ## Uruchomienie
 
-Na razie nie ma czego uruchamiać. Instrukcję uzupełnimy, gdy powstaną:
+Całe środowisko lokalne (baza PostgreSQL, backend FastAPI i frontend React) uruchamia się w Dockerze jedną komendą. Nie trzeba instalować Pythona ani Node.js.
 
-- środowisko lokalne z bazą danych i backendem (issue #4),
-- szkielet backendu (issue #6),
-- szkielet frontendu (issue #8).
+Wymagania wstępne: Git oraz Docker Desktop (z Docker Compose v2).
 
-Wymagania wstępne: [Wpisać tutaj]
+1. Skopiuj wzór konfiguracji. W pliku `.env` ustaw własne hasło do bazy (pliku `.env` nie wrzucamy do repozytorium):
+
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Zbuduj i uruchom wszystko. Pierwsze uruchomienie buduje obrazy, więc trwa kilka minut:
+
+   ```bash
+   docker compose up -d --build
+   ```
+
+3. Sprawdź, czy usługi działają. Baza i backend powinny mieć status `healthy`:
+
+   ```bash
+   docker compose ps
+   ```
+
+| Usługa | Adres |
+| --- | --- |
+| Frontend | [http://localhost:5173](http://localhost:5173) |
+| Backend (dokumentacja Swagger) | [http://localhost:8000/docs](http://localhost:8000/docs) |
+| Backend (sprawdzenie działania) | [http://localhost:8000/api/health](http://localhost:8000/api/health) |
+| Baza PostgreSQL | `localhost:5432` (dane z pliku `.env`) |
+
+Porty zmienisz w pliku `.env` (`BACKEND_PORT`, `FRONTEND_PORT`, `POSTGRES_PORT`).
+
+Przydatne polecenia:
+
+- po zmianie kodu przebuduj obrazy: `docker compose up -d --build`,
+- logi usługi: `docker compose logs -f backend`,
+- zatrzymanie: `docker compose down`,
+- zatrzymanie z usunięciem danych bazy: `docker compose down -v`.
+
+Uruchomienie bez Dockera opisują pliki `README.md` w katalogach `backend/` i `frontend/`.
 
 ## Praca w zespole
 

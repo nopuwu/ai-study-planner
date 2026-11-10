@@ -1,0 +1,11 @@
+# Nie wysyłamy do budowania obrazów: historii git, sekretów ani lokalnych zależności.
+.git
+**/.env
+**/.env.*
+**/node_modules
+**/dist
+**/__pycache__
+**/*.pyc
+**/venv
+**/.venv
+docs

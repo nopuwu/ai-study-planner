@@ -1,0 +1,57 @@
+# Środowisko lokalne SPL (issue #6): baza danych, backend i frontend w Dockerze.
+# Uruchomienie: skopiuj .env.example do .env, a potem: docker compose up -d --build
+
+name: spl
+
+services:
+  db:
+    image: postgres:16
+    container_name: spl-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: "${POSTGRES_DB:?Ustaw POSTGRES_DB w pliku .env}"
+      POSTGRES_USER: "${POSTGRES_USER:?Ustaw POSTGRES_USER w pliku .env}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?Ustaw POSTGRES_PASSWORD w pliku .env}"
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # Backend nie łączy się jeszcze z bazą (brak SQLAlchemy w requirements.txt).
+  # Zmienne połączenia dodamy tutaj, gdy powstanie warstwa danych.
+  backend:
+    build:
+      context: .
+      dockerfile: docker/backend.Dockerfile
+    container_name: spl-backend
+    restart: unless-stopped
+    environment:
+      AI_API_KEY: "${AI_API_KEY:?Ustaw AI_API_KEY w pliku .env}"
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/frontend.Dockerfile
+    container_name: spl-frontend
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT:-5173}:5173"
+
+volumes:
+  db_data:
