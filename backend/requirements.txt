@@ -17,7 +17,7 @@ uvicorn==0.54.0
 sqlalchemy[asyncio]>=2.0
 asyncpg
 alembic
-passlib[bcrypt]
+bcrypt
 python-jose[cryptography]
 pydantic[email]
 python-multipart
