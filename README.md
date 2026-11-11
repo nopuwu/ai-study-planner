@@ -61,6 +61,12 @@ Wymagania wstępne: Git oraz Docker Desktop (z Docker Compose v2).
    docker compose up -d --build
    ```
 
+3. Utwórz strukturę bazy danych. Pierwsze uruchomienie tworzy pustą bazę, więc musisz wykonać migrację, aby wygenerować tabele:
+
+    ```bash
+    docker compose exec backend alembic upgrade head
+    ```
+
 3. Sprawdź, czy usługi działają. Baza i backend powinny mieć status `healthy`:
 
    ```bash
@@ -79,6 +85,8 @@ Porty zmienisz w pliku `.env` (`BACKEND_PORT`, `FRONTEND_PORT`, `POSTGRES_PORT`)
 Przydatne polecenia:
 
 - po zmianie kodu przebuduj obrazy: `docker compose up -d --build`,
+- tworzenie nowej migracji po zmianie bazy: `docker compose exec backend alembic revision --autogenerate -m "nazwa_zmiany"`,
+- aktualizacja bazy (aplikacja nowych migracji): `docker compose exec backend alembic upgrade head`,
 - logi usługi: `docker compose logs -f backend`,
 - zatrzymanie: `docker compose down`,
 - zatrzymanie z usunięciem danych bazy: `docker compose down -v`.
