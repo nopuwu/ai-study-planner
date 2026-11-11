@@ -89,7 +89,8 @@ Przydatne polecenia:
 - aktualizacja bazy (aplikacja nowych migracji): `docker compose exec backend alembic upgrade head`,
 - logi usługi: `docker compose logs -f backend`,
 - zatrzymanie: `docker compose down`,
-- zatrzymanie z usunięciem danych bazy: `docker compose down -v`.
+- zatrzymanie z usunięciem danych bazy: `docker compose down -v`,
+- generacja bezpiecznego klucza do JWT: `openssl rand -hex 32`.
 
 Uruchomienie bez Dockera opisują pliki `README.md` w katalogach `backend/` i `frontend/`.
 
