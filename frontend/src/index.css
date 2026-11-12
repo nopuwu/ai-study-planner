@@ -1,4 +1,4 @@
-@import "tailwindcss";
+/* @import "tailwindcss";
 
 :root {
   --text: #6b6375;
@@ -110,4 +110,11 @@ code {
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
+} */
+
+@import "tailwindcss";
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
 }
