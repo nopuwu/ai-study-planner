@@ -3,6 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.api.health import router as health_router
 from app.api.auth import router as auth_router
+from app.api.subjects import router as subjects_router
+from app.api.materials import router as materials_router
 
 app = FastAPI(
     title=settings.project_name,
@@ -24,3 +26,5 @@ app.add_middleware(
 
 app.include_router(health_router, prefix="/api")
 app.include_router(auth_router, prefix="/api")
+app.include_router(subjects_router, prefix="/api")
+app.include_router(materials_router, prefix="/api")

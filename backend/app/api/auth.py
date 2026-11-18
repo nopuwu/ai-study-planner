@@ -1,15 +1,14 @@
 from datetime import datetime, timedelta, timezone
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
-from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from jose import jwt, JWTError
 from pydantic import BaseModel
 
-from app.database import AsyncSessionLocal
 from app.models import User, RefreshToken
 from app.schemas.user import UserCreate, UserResponse, Token
+from app.api.dependencies import get_db, get_current_user
 from app.core.security import (
     get_password_hash,
     verify_password,
@@ -21,31 +20,6 @@ from app.core.security import (
 )
 
 router = APIRouter(prefix="/auth", tags=["Autoryzacja"])
-
-# Zależność (Dependency) dostarczająca sesję bazy danych
-async def get_db():
-    async with AsyncSessionLocal() as session:
-        yield session
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
-
-async def get_current_user(token: str = Depends(oauth2_scheme), db: AsyncSession = Depends(get_db)):
-    """Dekoduje token i wyciąga z bazy danych aktualnego użytkownika."""
-    try:
-        # Dekodujemy token używając klucza i algorytmu z security.py
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        user_id: str = payload.get("sub")
-        if user_id is None:
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Brak ID w tokenie.")
-    except JWTError:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Nieprawidłowy lub wygasły token.")
-        
-    result = await db.execute(select(User).where(User.id == int(user_id)))
-    user = result.scalars().first()
-    
-    if user is None:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Użytkownik nie istnieje.")
-    return user
 
 # Dodatkowy schemat wejściowy dla endpointu /refresh
 class RefreshRequest(BaseModel):
