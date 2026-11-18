@@ -54,6 +54,9 @@ services:
     restart: unless-stopped
     ports:
       - "${FRONTEND_PORT:-5173}:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
 
 volumes:
   db_data:
