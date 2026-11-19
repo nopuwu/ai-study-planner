@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - main
-      - feature/github-actions-ci
+      - feature/7-github-actions-ci
 
   pull_request:
     branches:
