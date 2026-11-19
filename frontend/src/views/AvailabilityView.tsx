@@ -1,13 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Clock,
-  Plus,
-  Trash2,
-  Edit2,
-  Calendar,
-  AlertCircle,
-  CheckCircle2,
-} from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Plus, Trash2, Edit2 } from 'lucide-react';
 import type { StudyAvailability, StudyAvailabilityCreate } from '../api/types';
 import {
   getAvailability,
