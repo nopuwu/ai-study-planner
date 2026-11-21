@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   BookOpen,
   Calendar,
   Clock,
   Plus,
   FileText,
-  CheckCircle2,
-  AlertCircle,
   ArrowRight,
 } from 'lucide-react';
 import type { User, Subject, Exam, StudyAvailability } from '../api/types';
@@ -104,6 +102,14 @@ export function DashboardView({
     const found = subjects.find((s) => s.id === subjectId);
     return found ? found.name : 'Przedmiot';
   };
+
+  if (loading) {
+    return (
+      <div role="status" className="p-6 text-gray-500">
+        Ładowanie danych pulpitu...
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
