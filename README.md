@@ -61,12 +61,6 @@ Wymagania wstępne: Git oraz Docker Desktop (z Docker Compose v2).
    docker compose up -d --build
    ```
 
-3. Utwórz strukturę bazy danych. Pierwsze uruchomienie tworzy pustą bazę, więc musisz wykonać migrację, aby wygenerować tabele:
-
-    ```bash
-    docker compose exec backend alembic upgrade head
-    ```
-
 3. Sprawdź, czy usługi działają. Baza i backend powinny mieć status `healthy`:
 
    ```bash
