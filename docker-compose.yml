@@ -30,6 +30,10 @@ services:
     restart: unless-stopped
     environment:
       AI_API_KEY: "${AI_API_KEY:?Ustaw AI_API_KEY w pliku .env}"
+      AI_API_BASE_URL: "${AI_API_BASE_URL:-https://api.openai.com/v1}"
+      AI_MODEL: "${AI_MODEL:-gpt-4.1-mini}"
+      AI_TIMEOUT_SECONDS: "${AI_TIMEOUT_SECONDS:-30}"
+      AI_MAX_RETRIES: "${AI_MAX_RETRIES:-2}"
       DATABASE_URL: "postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}"
       JWT_SECRET_KEY: "${JWT_SECRET_KEY:?Ustaw JWT_SECRET_KEY w pliku .env}"
     depends_on:

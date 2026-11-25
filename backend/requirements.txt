@@ -21,3 +21,4 @@ bcrypt
 python-jose[cryptography]
 pydantic[email]
 python-multipart
+httpx>=0.28,<1.0
