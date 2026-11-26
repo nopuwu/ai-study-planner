@@ -64,12 +64,10 @@ export function ExamModal({
     try {
       setLoading(true);
       setError('');
-      // Przekształcamy do pełnego ISO 8601
-      const isoDate = new Date(examAt).toISOString();
       await onSubmit({
         subject_id: parseInt(subjectId, 10),
         title: title.trim(),
-        exam_at: isoDate,
+        exam_at: examAt,
       });
       onClose();
     } catch (err: any) {
